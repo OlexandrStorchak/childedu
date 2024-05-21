@@ -1,0 +1,19 @@
+.sweets-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.sweets {
+  display: flex;
+  width: max-content;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.sweets select {
+  all: unset;
+  text-align: center;
+  font-size: 50px;
+}

@@ -1,0 +1,66 @@
+.buttons {
+  font-size: 50px;
+  margin-right: 5dvw;
+  transition: all 1s ease;
+}
+
+.buttons:hover {
+  transform: scale(1.6);
+  cursor: pointer;
+}
+
+.login {
+  display: block;
+  position: absolute;
+  right: 0;
+  padding: 0;
+}
+
+.login button {
+  all: unset;
+  font-size: 50px;
+  margin-right: 1dvh;
+}
+
+.menu {
+  display: flex;
+  border-radius: 5px;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 30px;
+  margin-right: 1dvw;
+}
+
+.menu img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+
+.menu-wrapper {
+  margin: 0;
+  padding: 10px;
+  background-color: #440144;
+}
+
+.menu-wrapper button {
+  display: flex;
+  background-color: #830083;
+  justify-content: flex-end;
+  align-items: center;
+  color: var(--dark-text-color);
+  font-size: 14pt;
+  padding: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  border: none;
+}
+
+.menu-wrapper button:hover {
+  cursor: pointer;
+}
+
+.menu:hover {
+  cursor: pointer;
+}
