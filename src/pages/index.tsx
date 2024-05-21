@@ -9,5 +9,4 @@ export default function Home() {
       console.log('Speech synthesis is not supported in this browser.')
     }
   }, [])
-
 }
