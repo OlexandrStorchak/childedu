@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { ROOT_PATH } from '../constants';
 import { IAuthUser, IGoogleAuthUserInfo } from '../types';
+import { logLogin } from '../utils/activity';
 
 type AuthValuesType = {
   user: IAuthUser | null;
@@ -63,7 +64,10 @@ const AuthProvider = ({ children }: IAuthProvider) => {
     setShowSpiner(true);
     axios
       .get(USER_INFO_URL, { headers })
-      .then(({ data }: any) => setProfile(data))
+      .then(({ data }: any) => {
+        setProfile(data);
+        logLogin(data);
+      })
       .catch((err) => console.log(err))
       .finally(() => setShowSpiner(false));
   };
