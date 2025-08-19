@@ -53,7 +53,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
     setUser(null);
   };
 
-  const getUserInfo = () => {
+  const getUserInfo = async () => {
     if (!user?.accessToken) return;
     const USER_INFO_URL = `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.accessToken}`;
     const headers = {
@@ -62,14 +62,15 @@ const AuthProvider = ({ children }: IAuthProvider) => {
     };
 
     setShowSpiner(true);
-    axios
-      .get(USER_INFO_URL, { headers })
-      .then(({ data }: any) => {
-        setProfile(data);
-        logLogin(data);
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setShowSpiner(false));
+    try {
+      const { data }: any = await axios.get(USER_INFO_URL, { headers });
+      setProfile(data);
+      await logLogin({ id: data.id, email: data.email, name: data.name });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setShowSpiner(false);
+    }
   };
 
   const values = {
