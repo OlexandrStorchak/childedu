@@ -5,8 +5,9 @@ const adminRoute = process.env.ADMIN_ROUTE;
 const nextConfig = {
   env: {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-    ADMIN_ROUTE: adminRoute,
+    ADMIN_ROUTE: process.env.ADMIN_ROUTE,
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL,
   },
   reactStrictMode: true,
   webpack: (config) => {
@@ -20,6 +21,7 @@ const nextConfig = {
     return config;
   },
   async rewrites() {
+    const adminRoute = process.env.ADMIN_ROUTE;
     return adminRoute
       ? [
           {

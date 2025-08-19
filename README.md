@@ -15,9 +15,11 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-firebase-messaging-sender-id
 NEXT_PUBLIC_FIREBASE_APP_ID=your-firebase-app-id
 ADMIN_ROUTE=your-admin-route
 ADMIN_PASSWORD=your-admin-password
+ADMIN_EMAIL=your-admin-email
 ```
 
 `GOOGLE_CLIENT_ID` is consumed by `GoogleOAuthProvider` in
 `src/pages/_app.tsx`. The Firebase variables configure the Firestore database
 used to log user activity and progress. `ADMIN_ROUTE` rewrites to the admin
-page, and `ADMIN_PASSWORD` protects access to the login logs.
+page, `ADMIN_PASSWORD` protects access to the login logs, and `ADMIN_EMAIL`
+controls whether the logged-in user sees a link to the admin page.
