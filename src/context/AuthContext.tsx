@@ -41,12 +41,6 @@ const AuthProvider = ({ children }: IAuthProvider) => {
   const [user, setUser] = useState<IAuthUser | null>(null);
   const [profile, setProfile] = useState<IGoogleAuthUserInfo | null>(null);
   const [showSpiner, setShowSpiner] = useState<boolean>(false);
-  const USER_INFO_URL = `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user?.accessToken}`;
-
-  const headers = {
-    Authorization: `Bearer ${user?.accessToken}`,
-    Accept: 'application/json',
-  };
 
   const login = useGoogleLogin({
     onSuccess: ({ access_token }: TokenResponse) =>
@@ -60,6 +54,13 @@ const AuthProvider = ({ children }: IAuthProvider) => {
   };
 
   const getUserInfo = () => {
+    if (!user?.accessToken) return;
+    const USER_INFO_URL = `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.accessToken}`;
+    const headers = {
+      Authorization: `Bearer ${user.accessToken}`,
+      Accept: 'application/json',
+    };
+
     setShowSpiner(true);
     axios
       .get(USER_INFO_URL, { headers })
