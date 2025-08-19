@@ -1,4 +1,4 @@
-export const textToSpeach = async (item: string, voice:SpeechSynthesisVoice) => {
+export const textToSpeech = async (item: string, voice: SpeechSynthesisVoice) => {
   if ('speechSynthesis' in window) {
     const speech = new SpeechSynthesisUtterance(item)
     speech.voice = voice
