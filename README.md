@@ -20,6 +20,8 @@ ADMIN_EMAIL=your-admin-email
 
 `GOOGLE_CLIENT_ID` is consumed by `GoogleOAuthProvider` in
 `src/pages/_app.tsx`. The Firebase variables configure the Firestore database
-used to log user activity and progress. `ADMIN_ROUTE` rewrites to the admin
-page, `ADMIN_PASSWORD` protects access to the login logs, and `ADMIN_EMAIL`
-controls whether the logged-in user sees a link to the admin page.
+used to log user activity, progress, and each Google sign-in. Login events are
+stored in the `logins` collection with the user's email and a timestamp and are
+listed on the admin page. `ADMIN_ROUTE` rewrites to the admin page,
+`ADMIN_PASSWORD` protects access to the login logs, and `ADMIN_EMAIL` controls
+whether the logged-in user sees a link to the admin page.
