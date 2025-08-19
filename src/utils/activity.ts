@@ -5,8 +5,6 @@ import {
   getDocs,
   orderBy,
   query,
-  doc,
-  setDoc,
 } from 'firebase/firestore';
 /* eslint-enable import/no-unresolved */
 
@@ -44,10 +42,8 @@ export const logLogin = async (
   user: { id: string; email: string; name: string }
 ): Promise<void> => {
   try {
-    const userRef = doc(db, 'loginLogs', user.email);
-    await setDoc(userRef, { email: user.email, name: user.name }, { merge: true });
-    await addDoc(collection(userRef, 'logs'), {
-      userId: user.id,
+    await addDoc(collection(db, 'logins'), {
+      email: user.email,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
@@ -56,21 +52,11 @@ export const logLogin = async (
 };
 
 export const fetchLoginLogs = async (): Promise<
-  { email: string; name: string; logs: { timestamp: string }[] }[]
+  { email: string; timestamp: string }[]
 > => {
-  const usersSnapshot = await getDocs(collection(db, 'loginLogs'));
-  const userLogs = await Promise.all(
-    usersSnapshot.docs.map(async (userDoc) => {
-      const logsSnapshot = await getDocs(
-        query(collection(userDoc.ref, 'logs'), orderBy('timestamp', 'desc'))
-      );
-      return {
-        email: userDoc.id,
-        ...(userDoc.data() as any),
-        logs: logsSnapshot.docs.map((d) => d.data() as any),
-      };
-    })
+  const logsSnapshot = await getDocs(
+    query(collection(db, 'logins'), orderBy('timestamp', 'desc'))
   );
-  return userLogs.sort((a, b) => a.email.localeCompare(b.email));
+  return logsSnapshot.docs.map((d) => d.data() as { email: string; timestamp: string });
 };
 

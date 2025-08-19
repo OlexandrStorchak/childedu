@@ -2,10 +2,9 @@ import { useEffect, useState, FormEvent, useContext } from 'react';
 import { fetchLoginLogs } from '../../utils/activity';
 import { AuthContext } from '../../context/AuthContext';
 
-interface UserLogs {
+interface LogEntry {
   email: string;
-  name: string;
-  logs: { timestamp: string }[];
+  timestamp: string;
 }
 
 const AdminPage = () => {
@@ -13,7 +12,7 @@ const AdminPage = () => {
   const adminEmail = process.env.ADMIN_EMAIL;
   const [password, setPassword] = useState('');
   const [authorized, setAuthorized] = useState(false);
-  const [logs, setLogs] = useState<UserLogs[]>([]);
+  const [logs, setLogs] = useState<LogEntry[]>([]);
   const [pageSize, setPageSize] = useState(10);
   const [page, setPage] = useState(0);
 
@@ -72,16 +71,9 @@ const AdminPage = () => {
         </select>
       </label>
       <ul>
-        {paginated.map((user) => (
-          <li key={user.email}>
-            <strong>{user.email}</strong>
-            <ul>
-              {user.logs.map((log) => (
-                <li key={log.timestamp}>
-                  {new Date(log.timestamp).toLocaleString()}
-                </li>
-              ))}
-            </ul>
+        {paginated.map((log) => (
+          <li key={`${log.email}-${log.timestamp}`}>
+            {log.email} - {new Date(log.timestamp).toLocaleString()}
           </li>
         ))}
       </ul>
