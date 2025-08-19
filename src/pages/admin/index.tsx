@@ -2,11 +2,10 @@ import { useEffect, useState, FormEvent, useContext } from 'react';
 import { fetchLoginLogs } from '../../utils/activity';
 import { AuthContext } from '../../context/AuthContext';
 
-interface LoginLog {
-  userId: string;
+interface UserLogs {
   email: string;
   name: string;
-  timestamp: string;
+  logs: { timestamp: string }[];
 }
 
 const AdminPage = () => {
@@ -14,7 +13,9 @@ const AdminPage = () => {
   const adminEmail = process.env.ADMIN_EMAIL;
   const [password, setPassword] = useState('');
   const [authorized, setAuthorized] = useState(false);
-  const [logs, setLogs] = useState<LoginLog[]>([]);
+  const [logs, setLogs] = useState<UserLogs[]>([]);
+  const [pageSize, setPageSize] = useState(10);
+  const [page, setPage] = useState(0);
 
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
@@ -49,17 +50,52 @@ const AdminPage = () => {
       </form>
     );
   }
+  const paginated = logs.slice(page * pageSize, page * pageSize + pageSize);
 
   return (
     <div>
       <h1>Login Logs</h1>
+      <label>
+        Per page:
+        <select
+          value={pageSize}
+          onChange={(e) => {
+            setPageSize(Number(e.target.value));
+            setPage(0);
+          }}
+        >
+          {[5, 10, 20, 50].map((size) => (
+            <option key={size} value={size}>
+              {size}
+            </option>
+          ))}
+        </select>
+      </label>
       <ul>
-        {logs.map((log) => (
-          <li key={log.timestamp}>
-            {log.email} - {new Date(log.timestamp).toLocaleString()}
+        {paginated.map((user) => (
+          <li key={user.email}>
+            <strong>{user.email}</strong>
+            <ul>
+              {user.logs.map((log) => (
+                <li key={log.timestamp}>
+                  {new Date(log.timestamp).toLocaleString()}
+                </li>
+              ))}
+            </ul>
           </li>
         ))}
       </ul>
+      <div>
+        <button onClick={() => setPage((p) => p - 1)} disabled={page === 0}>
+          Prev
+        </button>
+        <button
+          onClick={() => setPage((p) => p + 1)}
+          disabled={(page + 1) * pageSize >= logs.length}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

@@ -65,7 +65,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
     try {
       const { data }: any = await axios.get(USER_INFO_URL, { headers });
       setProfile(data);
-      await logLogin(data);
+      await logLogin({ id: data.id, email: data.email, name: data.name });
     } catch (err) {
       console.log(err);
     } finally {
