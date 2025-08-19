@@ -1,5 +1,6 @@
 import { CircularProgress, Popover } from '@mui/material';
 import { useContext, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import { AuthContext } from '../../context/AuthContext';
 import styles from '../../styles/Nav.module.css'
 
@@ -7,6 +8,10 @@ const UserMenu = () => {
   const { login, logout, user, profile, showSpiner } = useContext(AuthContext);
   const [open, setOpen] = useState<boolean>(false);
   const anchorEl = useRef(null);
+  const router = useRouter();
+
+  const adminRoute = process.env.ADMIN_ROUTE;
+  const adminEmail = process.env.ADMIN_EMAIL;
 
   const handleOpen = () => {
     setOpen(true);
@@ -19,6 +24,13 @@ const UserMenu = () => {
   const handleLogout = () => {
     handleClose();
     logout();
+  };
+
+  const handleAdminClick = () => {
+    handleClose();
+    if (adminRoute) {
+      router.push(`/${adminRoute}`);
+    }
   };
 
   return (
@@ -55,6 +67,9 @@ const UserMenu = () => {
                   }}
                 >
                   <div className={styles['menu-wrapper']}>
+                    {profile?.email === adminEmail && (
+                      <button onClick={handleAdminClick}>Admin</button>
+                    )}
                     <button onClick={handleLogout}>Вийти</button>
                   </div>
                 </Popover>
